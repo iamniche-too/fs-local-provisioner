@@ -120,6 +120,14 @@ spec:
         app.kubernetes.io/name: provisioner
         app.kubernetes.io/instance: local-static-provisioner
     spec:
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+              - matchExpressions:
+                  - key: node-with-local-ssd
+                    operator: In
+                    values: ["true"]
       serviceAccountName: local-static-provisioner
       containers:
         - image: "quay.io/external_storage/local-volume-provisioner:v2.3.4"

@@ -2,6 +2,11 @@
 source ./export-gcp-credentials.sh
 ./generate-cluster-connection-yaml.sh $1
 
+# deploy the DS provisioner
+kubectl apply -f ./fs-local-provisioner-v2.3.4.yaml --kubeconfig ./kubeconfig.yaml
+
+# deploy the pod
+
 cat <<EOF | kubectl apply -f - --kubeconfig ./kubeconfig.yaml
 ---
 apiVersion: v1
