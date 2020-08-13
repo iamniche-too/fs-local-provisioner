@@ -1,5 +1,5 @@
 #!/bin/bash
-source ./export-gcp-credentials.sh
-./generate-cluster-connection-yaml.sh
 
-kubectl apply -f ./fs-local-provisioner.yaml --kubeconfig ./kubeconfig.yaml
+echo "Deploying to cluster gke-kafka-cluster..."
+
+./deploy-all.sh gke-kafka-cluster 

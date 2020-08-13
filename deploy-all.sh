@@ -1,21 +1,21 @@
 #!/bin/bash
 source ./export-gcp-credentials.sh
-./generate-cluster-connection-yaml.sh test-local-ssd-cluster
+./generate-cluster-connection-yaml.sh $1
 
 cat <<EOF | kubectl apply -f - --kubeconfig ./kubeconfig.yaml
 ---
 apiVersion: v1
 kind: Namespace
 metadata:
-  name: test 
+  name: ssd-provision 
   labels:
-    cluster: test 
+    cluster: ssd-provision 
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
   name: pod-pv-claim
-  namespace: test
+  namespace: ssd-provision
 spec:
   accessModes:
     - ReadWriteOnce
@@ -29,15 +29,15 @@ spec:
 apiVersion: v1
 kind: Pod
 metadata:
-  name: test-pod
-  namespace: test
+  name: ssd-provision-pod
+  namespace: ssd-provision
 spec:
   containers:
   - name: shell
     image: ubuntu:18.04
     command: ["/bin/sh", "-c"]
     # write to the disk then wait indefinitely (to allow access to the pod to verify output)
-    args: ["echo 'hello world' > /local-ssd/test.txt && tail -f /dev/null"]
+    args: ["echo 'hello world' > /local-ssd/hello_world.txt && tail -f /dev/null"]
     volumeMounts:
     - mountPath: /local-ssd/
       name: local-ssd
