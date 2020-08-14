@@ -44,6 +44,13 @@ metadata:
 provisioner: kubernetes.io/no-provisioner
 volumeBindingMode: WaitForFirstConsumer
 reclaimPolicy: Delete
+# restrict to a single zone
+# https://kubernetes.io/docs/concepts/storage/storage-classes/#allowed-topologies
+allowedTopologies:
+- matchLabelExpressions:
+  - key: failure-domain.beta.kubernetes.io/zone
+    values:
+    - europe-west2-a
 ---
 # Source: provisioner/templates/rbac.yaml
 apiVersion: rbac.authorization.k8s.io/v1
